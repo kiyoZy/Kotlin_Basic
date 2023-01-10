@@ -12,25 +12,69 @@ fun main(args: Array<String>) {
 //	testSet()
 //	testMap()
 //	testRange()
-	testAdd01()
-	testEnum()
+//	testAdd01()
+//	testEnum()
+//	testDataClass()
+	testDataClassList()
+//	testNull()
+}
+
+fun testNull() {
+	val s = fooTestNull()
+	val l = s.length
+	println(l)
+
+	val sNull: String? = fooTestNull02() // メソッド宣言も受け側もnull許容でないとエラー
+}
+
+fun fooTestNull02(): String? {
+	return null
+}
+
+fun fooTestNull(): String {
+//	return null // 	この時点でコンパイルエラーnull許容ではないから
+	return "ABC"
+}
+
+data class Person(var name: String? = null, var age: Int = 0)
+
+fun testDataClassList() {
+	var names: MutableList<Person> =
+	mutableListOf(
+		Person("AA", 10),
+		Person("BB", 9),
+		Person("CC", 8),
+	)
+
+	names.forEach {
+		value -> println(value)
+	}
+}
+
+fun testDataClass() {
+	var person = Person("Tom", 22)
+	println(person)
+
+	person = Person("Cat", 10)
+	println(person)
+	println(person.name)
 }
 
 enum class Direction {
-    NORTH, SOUTH, WEST, EAST
+	NORTH, SOUTH, WEST, EAST
 }
 
 enum class Color(val rgb: String) {
-    RED("#f00"),
-    GREEN("#0f0"),
-    BLUE("#00f"),
+	RED("#f00"),
+	GREEN("#0f0"),
+	BLUE("#00f"),
 }
 
 fun testEnum() {
-	    println(Direction.NORTH)	// NORTH
-    println(Color.RED)		// RED
-    println(Color.RED.name)	// RED
-    println(Color.RED.rgb)	// #f00
+	println(Direction.NORTH)    // NORTH
+	println(Color.RED)        // RED
+	println(Color.RED.name)    // RED
+	println(Color.RED.rgb)    // #f00
 }
 
 
