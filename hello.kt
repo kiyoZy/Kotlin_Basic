@@ -1,3 +1,10 @@
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.concurrent.schedule
+import kotlin.concurrent.thread
+import kotlin.concurrent.withLock
+import kotlin.concurrent.scheduleAtFixedRate
+
 fun main(args: Array<String>) {
 //	println("Hello, world ! ")
 //	println(args.contentToString() ) // 大文字変換
@@ -15,8 +22,59 @@ fun main(args: Array<String>) {
 //	testAdd01()
 //	testEnum()
 //	testDataClass()
-	testDataClassList()
+//	testDataClassList()
 //	testNull()
+//	testTimer01()
+//	testTimer02()
+	testTimer03()
+}
+
+fun testTimer03() {
+	var now: LocalDateTime
+
+	Timer().scheduleAtFixedRate(0, 1000) {
+//		println(LocalDateTime.now().getHour().toString() + ":" + LocalDateTime.now().getMinute() + ":" + LocalDateTime.now().getSecond())
+		println(LocalDateTime.now().getMinute())
+	}
+
+}
+
+// https://flytech.work/blog/11832/
+// https://taro.hatenablog.jp/entry/2013/08/01/223323
+fun testTimer02() {
+	var totalMin = 5
+//	var dispSecond = 0
+	val lock = java.util.concurrent.locks.ReentrantLock()
+
+	var now: LocalDateTime
+
+	println("開始　" + LocalDateTime.now())
+
+//	(1..totalMin).forEach {
+	for (i in 1..totalMin) {
+//		dispSecond = 1
+		thread {
+			lock.withLock {
+				now = LocalDateTime.now()
+//				println("$dispSecond 秒 " + now.getHour() + ":" + now.getMinute() + ":" + now.getSecond())
+				println("$i 秒 " + now.getHour() + ":" + now.getMinute() + ":" + now.getSecond())
+//				dispSecond++
+				Thread.sleep(1000)
+			}
+		}
+	}
+
+	println("終了　" + LocalDateTime.now())
+}
+
+fun testTimer01() {
+	println("開始　" + LocalDateTime.now())
+
+	Timer().schedule(1000) {
+		println("今何時？" + LocalDateTime.now())
+	}
+
+	println("終了　" + LocalDateTime.now())
 }
 
 fun testNull() {
@@ -40,14 +98,14 @@ data class Person(var name: String? = null, var age: Int = 0)
 
 fun testDataClassList() {
 	var names: MutableList<Person> =
-	mutableListOf(
-		Person("AA", 10),
-		Person("BB", 9),
-		Person("CC", 8),
-	)
+		mutableListOf(
+			Person("AA", 10),
+			Person("BB", 9),
+			Person("CC", 8),
+		)
 
-	names.forEach {
-		value -> println(value)
+	names.forEach { value ->
+		println(value)
 	}
 }
 
